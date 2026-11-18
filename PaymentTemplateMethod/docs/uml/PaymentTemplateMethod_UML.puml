@@ -1,0 +1,98 @@
+@startuml PaymentTemplateMethod
+skinparam classAttributeIconSize 0
+skinparam monochrome false
+skinparam classFontStyle bold
+skinparam style strictuml
+
+title Mẫu Thiết Kế Template Method - Quy Trình Xử Lý Thanh Toán
+
+abstract class PaymentProcessor {
+    - aLog: List<String>
+    + process(pOrder: Order): PaymentResult <<final>>
+    # validateOrder(pOrder: Order): void
+    # issueReceipt(pOrder: Order, pFee: long): void
+    # {abstract} calculateFee(pOrder: Order): long
+    # {abstract} authenticate(pOrder: Order): void
+    # {abstract} charge(pOrder: Order, pFee: long): void
+    # requiresAuthentication(): boolean
+    # notifyCustomer(pOrder: Order): void
+    # log(pMessage: String): void <<final>>
+    + getLog(): List<String> <<final>>
+    # {static} money(pAmount: long): String
+}
+
+class CreditCardPayment {
+    + {static} VALID_OTP: String = "123456"
+    - aCardNumber: String
+    - aEnteredOtp: String
+    - aRemainingLimit: long
+    + CreditCardPayment(pCardNumber: String, pCreditLimit: long, pEnteredOtp: String)
+    # calculateFee(pOrder: Order): long
+    # authenticate(pOrder: Order): void
+    # charge(pOrder: Order, pFee: long): void
+}
+
+class EWalletPayment {
+    + {static} VALID_PIN: String = "1234"
+    - {static} MIN_FEE: long = 1000
+    - aPhoneNumber: String
+    - aEnteredPin: String
+    - aBalance: long
+    + EWalletPayment(pPhoneNumber: String, pBalance: long, pEnteredPin: String)
+    # calculateFee(pOrder: Order): long
+    # authenticate(pOrder: Order): void
+    # charge(pOrder: Order, pFee: long): void
+    # notifyCustomer(pOrder: Order): void
+}
+
+class BankTransferPayment {
+    - {static} FLAT_FEE: long = 5000
+    - aReceivingAccount: String
+    + BankTransferPayment(pReceivingAccount: String)
+    # calculateFee(pOrder: Order): long
+    # requiresAuthentication(): boolean
+    # authenticate(pOrder: Order): void
+    # charge(pOrder: Order, pFee: long): void
+    # notifyCustomer(pOrder: Order): void
+}
+
+class Order {
+    - aOrderId: String
+    - aCustomerName: String
+    - aAmount: long
+    - aPaid: boolean = false
+    + Order(pOrderId: String, pCustomerName: String, pAmount: long)
+    + getOrderId(): String
+    + getCustomerName(): String
+    + getAmount(): long
+    + isPaid(): boolean
+    + markPaid(): void
+}
+
+class PaymentResult <<final>> {
+    - aSuccess: boolean
+    - aFee: long
+    - aMessage: String
+    - PaymentResult(pSuccess: boolean, pFee: long, pMessage: String)
+    + {static} success(pFee: long, pMessage: String): PaymentResult
+    + {static} failure(pMessage: String): PaymentResult
+    + isSuccess(): boolean
+    + getFee(): long
+    + getMessage(): String
+    + toString(): String
+}
+
+class PaymentException {
+    + PaymentException(pMessage: String)
+}
+
+PaymentProcessor <|-- CreditCardPayment
+PaymentProcessor <|-- EWalletPayment
+PaymentProcessor <|-- BankTransferPayment
+
+PaymentProcessor ..> Order : xử lý
+PaymentProcessor ..> PaymentResult : trả về
+PaymentProcessor ..> PaymentException : ném ngoại lệ
+
+@enduml
+

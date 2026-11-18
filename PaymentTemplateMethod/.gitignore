@@ -1,0 +1,9 @@
+bin/
+out/
+*.class
+jacoco.exec
+.DS_Store
+Thumbs.db
+Prompt-to-chuc-du-an-PaymentTemplateMethod*
+docs/report/
+

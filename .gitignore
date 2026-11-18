@@ -1,0 +1,17 @@
+# Prompt files
+Prompt-to-chuc-du-an-PaymentTemplateMethod*
+
+# Documentation reports
+docs/report/
+**/docs/report/
+
+# Build artifacts and binaries
+bin/
+out/
+*.class
+*.exec
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
