@@ -55,38 +55,7 @@ Template method `process(Order)` được khai báo `final` trong lớp trừu t
 | **Trừ tiền** | Kiểm tra hạn mức khả dụng | Kiểm tra số dư ví | Tạo mã giao dịch chuyển khoản |
 | **Thông báo** | Email mặc định | Tin nhắn trong ứng dụng ví | Email kèm số tài khoản nhận tiền |
 
----
 
-## Hướng dẫn chạy dự án
-
-### 1. Mở trong Eclipse IDE
-- Chọn **File → Import... → General → Existing Projects into Workspace → Next**.
-- Chọn thư mục `PaymentTemplateMethod` và nhấn **Finish**.
-- Dự án đã được cấu hình sẵn:
-  - Source Folder `src` và Test Source Folder `test`.
-  - Encoding toàn bộ dự án: **UTF-8**.
-  - Compiler Compliance: **JavaSE-17** (hoặc 21).
-  - Thư viện: **JUnit 5** container.
-- Chạy `Main.java`: Chuột phải vào `Main.java` → **Run As → Java Application**.
-- Chạy Test: Chuột phải vào `PaymentProcessorTest.java` → **Run As → JUnit Test** (17/17 test đạt màu xanh).
-
-### 2. Chạy từ dòng lệnh (Terminal / PowerShell / CMD)
-```bash
-# Di chuyển vào thư mục dự án
-cd PaymentTemplateMethod
-
-# Biên dịch mã nguồn và test vào thư mục bin/
-javac -encoding UTF-8 --release 17 -d bin src/payment/*.java
-javac -encoding UTF-8 --release 17 -cp "bin;lib/junit-platform-console-standalone-1.10.2.jar" -d bin test/payment/PaymentProcessorTest.java
-
-# Chạy chương trình Main (minh họa 5 trường hợp)
-java -cp bin payment.Main
-
-# Chạy toàn bộ 17 test JUnit 5
-java -jar lib/junit-platform-console-standalone-1.10.2.jar --class-path bin --select-class payment.PaymentProcessorTest
-```
-
----
 
 ## Kết quả kiểm chứng
 1. **Biên dịch:** Không lỗi, không cảnh báo.
